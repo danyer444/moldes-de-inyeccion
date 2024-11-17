@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Moldes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Gestión de Moldes</h1>
+
+<div class="form-container">
+    <h2>Agregar nuevo molde</h2>
+    <form id="moldForm">
+        <label for="codigo">Código de Molde:</label>
+        <input type="text" id="codigo" required>
+        <label for="pieza">Pieza a Extraer:</label>
+        <input type="text" id="pieza" required>
+        <label for="reparaciones">Reparaciones:</label>
+        <input type="text" id="reparaciones">
+        <label for="foto">Añadir Foto:</label>
+        <input type="file" id="foto" accept="image/*">
+        <label for="recomendaciones">Recomendaciones:</label>
+        <input type="text" id="recomendaciones">
+        <button type="submit">Agregar Moldes</button>
+    </form>
+</div>
+
+<table id="moldTable">
+    <thead>
+        <tr>
+            <th>Código de Molde</th>
+            <th>Pieza a Extraer</th>
+            <th>Reparaciones</th>
+            <th>Foto</th>
+            <th>Recomendaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('moldForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const codigo = document.getElementById('codigo').value;
+        const pieza = document.getElementById('pieza').value;
+        const reparaciones = document.getElementById('reparaciones').value;
+        const foto = document.getElementById('foto').files[0];
+        const recomendaciones = document.getElementById('recomendaciones').value;
+
+        const tableBody = document.getElementById('moldTable').querySelector('tbody');
+        const newRow = tableBody.insertRow();
+        
+        newRow.insertCell(0).innerText = codigo;
+        newRow.insertCell(1).innerText = pieza;
+        newRow.insertCell(2).innerText = reparaciones;
+
+        const photoCell = newRow.insertCell(3);
+        if (foto) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '50px';
+                img.style.height = '50px';
+                photoCell.appendChild(img);
+            }
+            reader.readAsDataURL(foto);
+        }
+
+        newRow.insertCell(4).innerText = recomendaciones;
+
+        // Limpiar el formulario
+        document.getElementById('moldForm').reset();
+    });
+</script>
+
+</body>
+</html>
